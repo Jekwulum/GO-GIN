@@ -1,6 +1,7 @@
 # other projects
 /github.com/jekwulum/.idea
 /github.com/jekwulum/mongoGinAPI/.env
+/github.com/jekwulum/mongoGinAPI/gin.log
 /github.com/jekwulum/firstapp
 /github.com/jekwulum/test
 /test

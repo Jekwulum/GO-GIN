@@ -46,6 +46,14 @@ func (uc *UserController) GetUser(ctx *gin.Context) {
 		gin.H{"message": "success", "data": user})
 }
 
+// GetUsers godoc
+// @Summary Get All Users
+// @Description get all users in the database
+// @Tags Users
+// @Accept */*
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Router /v1/user/get-all [get]
 func (uc *UserController) GetAll(ctx *gin.Context) {
 	users, err := uc.UserService.GetAll()
 	fmt.Println("users: ", users)

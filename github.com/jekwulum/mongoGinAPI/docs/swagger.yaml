@@ -1,0 +1,34 @@
+basePath: /
+host: localhost:8080
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: This is a go-gin server implementing a mongodb & postgres database.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Gin Swagger CRUD REST-API
+  version: "1.0"
+paths:
+  /v1/user/get-all:
+    get:
+      consumes:
+      - '*/*'
+      description: get all users in the database
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Get All Users
+      tags:
+      - Users
+schemes:
+- http
+swagger: "2.0"

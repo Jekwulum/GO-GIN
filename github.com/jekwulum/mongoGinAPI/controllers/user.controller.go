@@ -21,6 +21,22 @@ func New(userservice services.UserService) UserController {
 }
 
 // routes
+
+// CreateUser godoc
+// @Summary Create user
+// @Description create and add new user to the database
+// @Tags Users
+// @Accept json
+// @Produce json
+// @Param name formData string true "user's name"
+// @Param age formData string true "user's age"
+// @Param state formData string true "user's name"
+// @Param city formData string true "user's age"
+// @Param pincode formData string true "user's name"
+// @Success 201 {object} map[string]string{}
+// @Failure 400	{object} map[string]interface{}
+// @Failure 502	{object} map[string]interface{}
+// @Router /v1/user/create [post]
 func (uc *UserController) CreateUser(ctx *gin.Context) {
 	var user models.User
 	if err := ctx.ShouldBindJSON(&user); err != nil {
@@ -35,6 +51,16 @@ func (uc *UserController) CreateUser(ctx *gin.Context) {
 	ctx.IndentedJSON(http.StatusCreated, gin.H{"message": "success"})
 }
 
+// GetUser godoc
+// @Summary Get user
+// @Description fetch a user from the database
+// @Tags Users
+// @Accept json
+// @Produce json
+// @Param name path string true "user's name"
+// @Success 200 {object} map[string]string{}
+// @Failure 404	{object} map[string]interface{}
+// @Router /v1/user/get/{name} [get]
 func (uc *UserController) GetUser(ctx *gin.Context) {
 	username := ctx.Param("name")
 	user, err := uc.UserService.GetUser(&username)
@@ -65,6 +91,17 @@ func (uc *UserController) GetAll(ctx *gin.Context) {
 	ctx.IndentedJSON(http.StatusOK, users)
 }
 
+
+// UpdateUser godoc
+// @Summary Update user
+// @Description update existing user in the database
+// @Tags Users
+// @Accept json
+// @Produce json
+// @Success 201 {object} map[string]string{}
+// @Failure 400	{object} map[string]interface{}
+// @Failure 502	{object} map[string]interface{}
+// @Router /v1/user/create [patch]
 func (uc *UserController) UpdateUser(ctx *gin.Context) {
 	var user models.User
 	if err := ctx.ShouldBindJSON(&user); err != nil {
@@ -79,6 +116,17 @@ func (uc *UserController) UpdateUser(ctx *gin.Context) {
 	ctx.IndentedJSON(http.StatusCreated, gin.H{"message": "success"})
 }
 
+
+// DeleteUser godoc
+// @Summary Delete user
+// @Description delete a user from the database
+// @Tags Users
+// @Accept json
+// @Produce json
+// @Param name path string true "user's name"
+// @Success 200 {object} map[string]string{}
+// @Failure 404	{object} map[string]interface{}
+// @Router /v1/user/get/{name} [delete]
 func (uc *UserController) DeleteUser(ctx *gin.Context) {
 	username := ctx.Param("name")
 	err := uc.UserService.DeleteUser(&username)

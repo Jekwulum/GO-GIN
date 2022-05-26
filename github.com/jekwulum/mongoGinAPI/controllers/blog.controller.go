@@ -19,7 +19,7 @@ func (bc *BlogController) GetBlogs(ctx *gin.Context) {
 	blogs, err := services.GetBlogs(bc.DB)
 	if err != nil {
 		fmt.Println(err)
-		ctx.JSON(http.StatusInternalServerError, err.Error())
+		ctx.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
 		return
 	}
 	ctx.IndentedJSON(http.StatusOK, blogs)
@@ -114,11 +114,24 @@ func (bc *BlogController) DeleteBlog(ctx *gin.Context) {
 	ctx.IndentedJSON(http.StatusOK, gin.H{"message": "Blog deleted successfully"})
 }
 
+func GetDB() *gorm.DB {
+	var db *gorm.DB
+	return db
+}
+
+func myGet(c *gin.Context) {
+	var blogs []models.Blog
+	db := GetDB()
+	db.Find(&blogs)
+	c.IndentedJSON(200, gin.H{"data": blogs})
+}
+
 func (bc *BlogController) RegisterBlogRoutes(rg *gin.RouterGroup) {
 	blogRoute := rg.Group("/blog")
 	{
 		blogRoute.POST("/create", bc.CreateBlog)
 		blogRoute.GET("/get-all", bc.GetBlogs)
+		blogRoute.GET("/get-alls", myGet)
 		blogRoute.GET("/get/:id", bc.GetBlog)
 		blogRoute.PATCH("/update", bc.UpdateBlog)
 		blogRoute.DELETE("/delete/:id", bc.DeleteBlog)

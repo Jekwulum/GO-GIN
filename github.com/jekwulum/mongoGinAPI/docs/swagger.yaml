@@ -13,6 +13,70 @@ info:
   title: Gin Swagger CRUD REST-API
   version: "1.0"
 paths:
+  /v1/user/create:
+    patch:
+      consumes:
+      - application/json
+      description: update existing user in the database
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "502":
+          description: Bad Gateway
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Update user
+      tags:
+      - Users
+    post:
+      consumes:
+      - application/json
+      description: create and add new user to the database
+      parameters:
+      - description: user's name
+        in: formData
+        name: name
+        required: true
+        type: string
+      - description: user's age
+        in: formData
+        name: age
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "502":
+          description: Bad Gateway
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Create user
+      tags:
+      - Users
   /v1/user/get-all:
     get:
       consumes:
@@ -27,6 +91,61 @@ paths:
             additionalProperties: true
             type: object
       summary: Get All Users
+      tags:
+      - Users
+  /v1/user/get/{name}:
+    delete:
+      consumes:
+      - application/json
+      description: delete a user from the database
+      parameters:
+      - description: user's name
+        in: path
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Delete user
+      tags:
+      - Users
+    get:
+      consumes:
+      - application/json
+      description: fetch a user from the database
+      parameters:
+      - description: user's name
+        in: path
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Get user
       tags:
       - Users
 schemes:

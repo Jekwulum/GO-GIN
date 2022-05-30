@@ -2,6 +2,10 @@
 /github.com/jekwulum/.idea
 /github.com/jekwulum/mongoGinAPI/.env
 /github.com/jekwulum/mongoGinAPI/gin.log
+/github.com/jekwulum/mongoGinAPI/controllers/blog.controllerf.go
+/github.com/jekwulum/mongoGinAPI/services/blog.service.go
+/github.com/jekwulum/mongoGinAPI/services/blog.service.impl.go
+/github.com/jekwulum/mongoGinAPI/handlers
 /github.com/jekwulum/firstapp
 /github.com/jekwulum/test
 /test

@@ -86,6 +86,7 @@ func (uc *UserController) GetAll(ctx *gin.Context) {
 	if err != nil {
 		fmt.Println("get all error 4")
 		ctx.JSON(http.StatusBadGateway, gin.H{"message": err.Error()})
+		fmt.Println("--------------",err.Error())
 		return
 	}
 	ctx.IndentedJSON(http.StatusOK, users)

@@ -64,6 +64,7 @@ func (u *UserServiceImpl) GetAll() ([]*models.User, error) {
 		fmt.Println("get all error 3")
 		return nil, errors.New("documents not found")
 	}
+	fmt.Println("usersssssss ", users)
 	return users, nil
 }
 

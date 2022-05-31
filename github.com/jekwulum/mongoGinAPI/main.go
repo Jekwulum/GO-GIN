@@ -40,7 +40,7 @@ func setupLogOutput() {
 
 
 func init() {
-	// mongodb
+	// mongodb setup
 	ctx := context.TODO()
 
 	mongoconn := options.Client().ApplyURI("mongodb://localhost:27017")
@@ -56,6 +56,10 @@ func init() {
 	usercollection = mongoclient.Database("userdb").Collection("users")
 	userservice = services.NewUserService(usercollection, ctx)
 	usercontroller = controllers.New(userservice)
+
+	
+	models.ConnectPostGRES_DB()
+	setupLogOutput()
 	
 	server = gin.New()
 	server.Use(gin.Recovery(), middlewares.Logger())
@@ -79,8 +83,8 @@ func init() {
 // @schemes http
 func main() {
 
-	setupLogOutput()
-	models.ConnectPostGRES_DB()
+	// setupLogOutput()
+	// models.ConnectPostGRES_DB()
 	defer mongoclient.Disconnect(ctx)
 
 	// url := ginSwagger.URL("http://localhost:8080/swagger/doc.json")

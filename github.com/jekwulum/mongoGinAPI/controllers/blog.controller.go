@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	"fmt"
+	// "fmt"
 	"net/http"
 	// "strconv"
 
@@ -32,12 +32,16 @@ func GetBlog (c *gin.Context) {
 func CreateBlog (c *gin.Context) {
 	input, err := validators.CreateBlogModel(c)
 	if err != nil {
-		fmt.Println("create errorrrr-----------> ", err)
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
+
 	blog := models.Blog{Title: input.Title, Content: input.Content}
-	models.DB.Create(&blog)
-	fmt.Println("bloggg", input.Title)
+	createErr := models.DB.Create(&blog).Error
+	if createErr != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": createErr.Error()})
+		return
+	}
 
 	c.IndentedJSON(http.StatusCreated, gin.H{"data": blog})
 }
@@ -45,13 +49,14 @@ func CreateBlog (c *gin.Context) {
 func UpdateBlog (c *gin.Context) {
 	blog, input, err := validators.UpdateBlogModel(c)
 	if err != nil {
-		fmt.Println("update error-------> ", err)
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	models.DB.Model(&blog).Updates(input)
-	fmt.Println("input", input)
-	fmt.Println("blog", blog)
+	if updateErr := models.DB.Model(&blog).Updates(&input).Error; updateErr != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": updateErr.Error()})
+		return
+	}
 	c.IndentedJSON(http.StatusOK, gin.H{"data": blog})
 }
 
@@ -59,11 +64,13 @@ func DeleteBlog (c *gin.Context) {
 	var blog models.Blog
 	err := models.DB.Where("id = ?", c.Param("id")).First(&blog).Error
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Record not found!"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	models.DB.Delete(&blog)
+	if deleteErr := models.DB.Delete(&blog); deleteErr != nil {
+		c.JSON(http.StatusNotImplemented, gin.H{"error": deleteErr.Error()})
+	}
 	c.IndentedJSON(http.StatusOK, gin.H{"message": "deleted successfully"})
 }
 

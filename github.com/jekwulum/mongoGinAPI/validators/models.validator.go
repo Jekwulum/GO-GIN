@@ -1,7 +1,7 @@
 package validators
 
 import (
-	"net/http"
+	// "net/http"
 
 	"github.com/gin-gonic/gin"
 	"github.com/jekwulum/mongoGinAPI/models"
@@ -17,29 +17,26 @@ type UpdateBlogInput struct {
 	Content string `json:"content"`
 }
 
-func CreateBlogModel (c *gin.Context) (CreateBlogInput, error) {
+func CreateBlogModel (c *gin.Context) (*CreateBlogInput, error) {
 	var input CreateBlogInput
 	if err := c.ShouldBindJSON(&input); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return input, err
+		return nil, err
 	}
-	return input, nil
+	return &input, nil
 }
 
-func UpdateBlogModel (c *gin.Context) (models.Blog, UpdateBlogInput, error) {
+func UpdateBlogModel (c *gin.Context) (*models.Blog, *UpdateBlogInput, error) {
 	var blog models.Blog
 	var input UpdateBlogInput
 
 	existsErr := models.DB.Where("id = ?", c.Param("id")).First(&blog).Error
 	if existsErr != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Record not found"})
-		return blog, input, existsErr
+		return nil, nil, existsErr
 	}
 
-	if updateErr := c.ShouldBindJSON(&input); updateErr != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": updateErr.Error()})
-		return blog, input, updateErr
+	if bindErr := c.ShouldBindJSON(&input); bindErr != nil {
+		return nil, nil, bindErr
 	}
 
-	return blog, input, nil
+	return &blog, &input, nil
 }
